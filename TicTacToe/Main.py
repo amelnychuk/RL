@@ -1,6 +1,6 @@
 import numpy as np
 
-from Environement import Environment
+from Environment import Environment
 from Agent import Agent, Human
 
 
