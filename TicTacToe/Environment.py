@@ -45,6 +45,7 @@ class Environment:
     def set_end_var(self, player):
         self.winner = player
         self.ended = True
+        print "{} wins".format(player)
         return True
 
 
@@ -53,40 +54,29 @@ class Environment:
         if not force_recalculate and self.ended:
             return self.ended
 
-        # check rows
-        for i in range(LENGTH):
-            for player in (self.x, self.o):
-                if self.board[i].sum() == player * LENGTH:
-                    self.winner = player
-                    self.ended = True
-                    return True
 
-        # check columns
-        for j in range(LENGTH):
-            for player in (self.x, self.o):
-                if self.board[:, j].sum() == player * LENGTH:
-                    self.winner = player
-                    self.ended = True
-                    return True
-
-        # check diagonals
         for player in (self.x, self.o):
-            # top-left -> bottom-right diagonal
+            for i in range(LENGTH):
+                #check rows
+                if self.board[i].sum() == player * LENGTH:
+                    return self.set_end_var(player)
+                # check columns
+                if self.board[:, i].sum() == player * LENGTH:
+                    return self.set_end_var(player)
+
+            # check diagonals
             if self.board.trace() == player * LENGTH:
-                self.winner = player
-                self.ended = True
-                return True
+                return self.set_end_var(player)
             # top-right -> bottom-left diagonal
             if np.fliplr(self.board).trace() == player * LENGTH:
-                self.winner = player
-                self.ended = True
-                return True
+                return self.set_end_var(player)
 
         # check if draw
         if np.all((self.board == 0) == False):
             # winner stays None
             self.winner = None
             self.ended = True
+            print "Game is a draw."
             return True
 
         # game is not over
