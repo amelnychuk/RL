@@ -13,7 +13,7 @@ class Environment:
         self.num_states = 3**(LENGTH*LENGTH)
 
     def is_empty(self,i,j):
-        return self.board[i,j] == 0
+        return self.board[i, j] == 0
 
     def reward(self, symbol):
 
@@ -41,6 +41,12 @@ class Environment:
                 h += (3**k) * v
                 k +=1
         return h
+
+    #prototyped function to calculate hash from state
+    def get_state_from_flat(self, arr):
+        index_seed = (np.arange(LENGTH*LENGTH) ** 3)
+        value_seed = arr[arr == -1] = 2
+        return (index_seed * value_seed).sum()
 
     def set_end_var(self, player):
         self.winner = player
