@@ -1,4 +1,5 @@
 import numpy as np
+import itertools
 
 from Environment import Environment
 from Agent import Agent, Human
@@ -21,6 +22,17 @@ def get_state_hash_and_winner(env, i=0, j=0):
             results += get_state_hash_and_winner(env,i,j+1)
 
     return results
+
+#calculate all states, if ended and their winner
+def permutations():
+
+    results = []
+    for p in itertools.product(itertools.product([-1, 0, 1], repeat=3), repeat=3):
+        state = env.get_state_from_flat(p.flatten())
+        ended = env.game_over(force_recalculate=True)
+        winner = env.winner
+        results.append((state, ended, winner))
+
 
 def initialV(env, symbol, state_winner_triples):
     print "Initializeing V{}".format(symbol)
