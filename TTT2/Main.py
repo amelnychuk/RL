@@ -1,17 +1,24 @@
 
 
-import numppy as np
+import numpy as np
 
+from Environment import Env
 
 def play_game():
 
     #Init Agent
-    #Init Env
+    Env = Env()
 
 
 
 def main():
 
+    pass
+
+    #Initialize Agents
+
+
+    #Train
 
 if __name__ == '__main__':
     main()
