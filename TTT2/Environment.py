@@ -1,6 +1,7 @@
 
 import numpy as np
 from itertools import product
+from tabulate import tabulate
 
 class Env:
 
@@ -9,7 +10,8 @@ class Env:
     def __init__(self):
         self._board = np.zeros(self.LENGTH**2)
         self.calcStateHash()
-        self._index = np.arange(self.LENGTH**2)+1
+        self._empty = np.arange(self.LENGTH**2).tolist()
+
         self._state = self.calcStateHash()
         self.x = 1
         self.o = -1
@@ -17,15 +19,20 @@ class Env:
         self.ended = False
         self.numStates = 3**(self.LENGTH**2)
 
-    def setBoard(self, state):
-        self._board = state
-        self.calcStateHash
+    def getEmpty(self):
+        """
+
+        :return: (np.array)
+            converts the zeros in self._board to an array of indecies
+        """
+        return np.where(self.getBoard() == 0)
+
+    def setBoard(self, index, symbol):
+        self._board[index] = symbol
+        self.calcStateHash()
 
     def getBoard(self):
         return self._board
-
-
-
 
     def reward(self, symbol):
 
@@ -83,13 +90,13 @@ class Env:
 
     def calcStateHash(self):
 
-        board = self.getBoard()
+        board = np.copy(self.getBoard())
         seed = board[board == -1] = 2
         indices = np.arange(self.LENGTH**2)**3
 
         self._hash = (seed + indices).sum()
 
-    def gethash(self):
+    def getHash(self):
         return self._hash
 
 
@@ -103,9 +110,11 @@ class Env:
             self.setBoard(state)
             self.calcStateHash()
             self.game_over(force_recalculate=True)
+
             if self.ended == True:
                 if self.winner is None:
                     value = .5
+
                 else:
 
                     if self.winner == symbol:
@@ -116,6 +125,14 @@ class Env:
 
             V[self.getHash()] = value
         return V
+
+    def draw(self):
+
+        values = [self.x, 0, self.o]
+        symbols = ['x', ' ', 'o']
+        board = self.getBoard().reshape((3,3)).tolist()
+        symbol_board = [[symbols[values.index(v)] for v in row] for row in board]
+        print tabulate(symbol_board, tablefmt='grid')
 
 
 
