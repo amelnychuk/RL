@@ -1,4 +1,4 @@
-
+import re
 import numpy as np
 
 class Agent:
@@ -11,9 +11,22 @@ class Agent:
         self.verbose = False
 
     def setSymbol(self, sym):
+        """
+
+        :param sym: (sign)
+            sets the symbol of the agent.
+
+        """
         self.symbol = sym
 
     def setV(self, v):
+        """
+
+        :param v: (list)
+            sets the value array to be indexed by state
+
+        :return:
+        """
         #this is the learning data
         self.V = v
 
@@ -25,15 +38,21 @@ class Agent:
             #take a random action
             if self.verbose:
                 print "Taking random action"
-                idx = np.random.choice(env.getEmpty())
-                env.getEmpty().pop(idx)
-                next_move = idx
-        else:
+            empty = env.getEmpty()
+            idx = np.random.choice(empty)
 
-            for i in env.getEmpty():
+            #env.getEmpty().pop(idx)
+            next_move = idx
+        else:
+            if self.verbose:
+                print "Taking greedy action"
+            empty = env.getEmpty()
+
+            for i in empty:
                 #
                 env.setBoard(i, self.symbol)
                 value = self.V[env.getHash()]
+                env.setBoard(i, 0)
                 if value > best_value:
                     best_value = value
                     next_move = i
@@ -56,6 +75,39 @@ class Agent:
             self.V[prev] = value
             target = value
         self.reset_history()
+
+
+class Human:
+
+    def __init__(self):
+        pass
+
+    def set_symbol(self, symbol):
+        self.symbol = symbol
+
+    def take_action(self, env):
+        pattern = re.compile("[0-2],[0-2]")
+        while True:
+            valid = False
+            while not valid:
+                move = raw_input("Enter coord row,col (i,j = 0..2)")
+                if re.match(pattern, move):
+                    valid = True
+            i, j = move.split(',')
+            i = int(i)
+            j = int(j)
+            idx = np.arange(9).reshape(3,3)[i,j]
+            if idx in env.getEmpty():
+                env.setBoard(idx, self.symbol)
+                break
+
+    def update(self, env):
+        pass
+
+    def update_state_history(self, state):
+        pass
+
+
 
 
 
