@@ -158,9 +158,9 @@ class Env:
 
         board = np.copy(self.getBoard())
         board[board == -1] = 2
+
         indices = np.arange(self.LENGTH**2)
         base = np.ones(self.LENGTH**2)*3
-
 
         self._hash = int((np.power(base, indices) * board).sum())
 
