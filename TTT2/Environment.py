@@ -9,11 +9,14 @@ class Env:
 
     def __init__(self):
         self.resetBoard()
+        self.calcStateHash()
         self.x = 1
         self.o = -1
         self.winner = None
         self.ended = False
         self.numStates = 3**(self.LENGTH**2)
+        self.verbose = False
+
 
     def resetBoard(self):
 
@@ -74,7 +77,9 @@ class Env:
             the symbol of the player
 
         """
-        print "Victory"
+        if self.verbose:
+            print "Victory"
+
         self.winner = player
         self.ended = True
 
@@ -84,7 +89,8 @@ class Env:
         Sets the environment variables incase of a tie
         :return:
         """
-        print "It is balanced, as all things should be."
+        if self.verbose:
+            print "It is balanced, as all things should be."
         self.winner = None
         self.ended = True
 
@@ -138,7 +144,7 @@ class Env:
 
     def permutations(self):
         """
-        Generator for all the states of the game board.
+        Generator for all the states of the game board. Excessive
 
         """
         for permutation in product(product([0,self.x, self.o], repeat=self.LENGTH), repeat=self.LENGTH):
@@ -152,9 +158,11 @@ class Env:
 
         board = np.copy(self.getBoard())
         board[board == -1] = 2
-        indices = np.arange(self.LENGTH**2)**3
+        indices = np.arange(self.LENGTH**2)
+        base = np.ones(self.LENGTH**2)*3
 
-        self._hash = int((board * indices).sum())
+
+        self._hash = int((np.power(base, indices) * board).sum())
 
 
     def getHash(self):
@@ -175,15 +183,12 @@ class Env:
         :return:
         """
 
-        #calculate state triplet for
         V = np.zeros(self.numStates)
-        print "Permutations: ".format(len(list(self.permutations())))
+
         for state in self.permutations():
 
             self._board = state
             self.calcStateHash()
-
-            print "intializing state: {}".format(self.getHash())
             self.game_over(force_recalculate=True)
 
             if self.ended == True:
@@ -196,11 +201,8 @@ class Env:
                         value = 0
 
                 V[self.getHash()] = value
-                #reset game winners
-                self.winner = None
-                self.ended = False
 
-
+        self.resetBoard()
         return V
 
     def draw(self):
