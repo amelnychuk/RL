@@ -42,6 +42,19 @@ class Grid:
 
         assert(self.current_state() in self.all_states())
 
+    def undo_move(self, action):
+        if action in self._actions[(self.i, self.j)]:
+            if action == 'U':
+                self.i += 1
+            if action == 'D':
+                self.i -= 1
+            if action == 'R':
+                self.j -= 1
+            if action == 'L':
+                self.j += 1
+
+        assert(self.current_state() in self.all_states())
+
     def game_over(self):
         return (self.i, self.j) not in self._actions
 
