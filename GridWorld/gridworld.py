@@ -60,3 +60,21 @@ class Grid:
 
     def all_states(self):
         return set(self._actions.keys()) | set(self._rewards.keys())
+
+def standard_grid():
+
+    g = Grid(3,4, (2,0))
+    rewards = {(0,3):1, (1,3): -1}
+    actions = {
+    (0, 0): ('D', 'R'),
+    (0, 1): ('L', 'R'),
+    (0, 2): ('L', 'D', 'R'),
+    (1, 0): ('U', 'D'),
+    (1, 2): ('U', 'D', 'R'),
+    (2, 0): ('U', 'R'),
+    (2, 1): ('L', 'R'),
+    (2, 2): ('L', 'R', 'U'),
+    (2, 3): ('L', 'U'),
+  }
+    g.set(rewards. actions)
+    return g
