@@ -40,7 +40,7 @@ class Grid:
             if action == 'L':
                 self.j -= 1
 
-        assert(self.current_state() in self.all_states())
+        return self._rewards.get((self.i,self.j), 0)
 
     def undo_move(self, action):
         if action in self._actions[(self.i, self.j)]:
