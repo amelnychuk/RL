@@ -1,5 +1,5 @@
 
-
+from __future__ import print_function, division
 from gridworld import standard_grid
 import numpy as np
 
@@ -7,10 +7,23 @@ import numpy as np
 SMALL_ENOUGH = 1e-3
 
 def print_values(V, g):
-    pass
+    for i in range(g._width):
+        print ("-"*20)
+        for j in range(g._height):
+            v = V.get((i, j), 0)
+            if v >=0:
+                print ("%.2f|" % v, end="")
+            else:
+                print("%.2f|" % v, end="")
+        print("")
 
 def print_policy(P, g):
-    pass
+    for i in range(g._width):
+        print ("-"*20)
+        for j in range(g._height):
+            a = P.get((i,j), ' ')
+            print(" %s |" % a, end="")
+        print("")
 
 def main():
     grid = standard_grid()
@@ -27,10 +40,10 @@ def main():
         for s in states:
             old_v = V[s]
 
-            if s in grid.actions:
+            if s in grid._actions:
                 new_v = 0
-                p_a = 1.0 / len(grid.actions[s])
-                for a in grid.actions:
+                p_a = 1.0 / len(grid._actions[s])
+                for a in grid._actions:
                     grid.set_state(s)
                     r = grid.move(a)
                     new_v += p_a * (r + gamma * V[grid.current_state()])
@@ -38,9 +51,9 @@ def main():
                 biggest_change = max(biggest_change, np.abs(old_v - V[s]))
             if biggest_change < SMALL_ENOUGH:
                 break
-        print "values for uniform random actions"
+        print ("values for uniform random actions")
         print_values(V, grid)
-        print "\n\n"
+        print ("\n\n")
 
 
         policy = {
@@ -81,7 +94,7 @@ def main():
             if biggest_change < SMALL_ENOUGH:
                 break
 
-        print "values for a fixed policy:"
+        print ("values for a fixed policy:")
         print_values(V, grid)
     #continue to impliment thursday
 
