@@ -63,7 +63,7 @@ class Grid:
 
 def standard_grid():
 
-    g = Grid(3,4, (2,0))
+    g = Grid(3, 4, (2,0))
     rewards = {(0,3):1, (1,3): -1}
     actions = {
     (0, 0): ('D', 'R'),
