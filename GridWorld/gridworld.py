@@ -19,6 +19,12 @@ class Grid:
         self._rewards = rewards
         self._actions = actions
 
+    def actions(self):
+        return self._actions
+
+    def rewards(self):
+        return self._rewards
+
     def set_state(self, s):
         self.i = s[0]
         self.j = s[1]
