@@ -48,7 +48,7 @@ if __name__ == '__main__':
     grid = standard_grid()
 
     print("rewards:")
-    print_values(grid._rewards, grid)
+    print_values(grid.rewards(), grid)
 
     policy = {
     (2, 0): 'U',
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     returns = {}
     states = grid.all_states()
     for s in states:
-        if s in grid._actions:
+        if s in grid.actions():
             returns[s] = []
         else:
             V[s] = 0
