@@ -99,3 +99,5 @@ def negative_grid(step_cost=.1):
         (2,3): step_cost,
     })
 
+    return g
+
