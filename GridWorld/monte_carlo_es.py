@@ -106,7 +106,7 @@ if __name__ == '__main__':
 
         deltas.append(biggest_change)
 
-
+        #update policy
         for s in policy.keys():
             policy[s] = max_dict(Q[s])[0]
 
