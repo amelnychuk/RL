@@ -2,6 +2,8 @@
 
 import numpy as np
 
+ALL_POSSIBLE_ACTIONS = ('U','D','L','R')
+
 class Coordinate:
     def __init__(self):
 
